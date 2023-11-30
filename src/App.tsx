@@ -3,7 +3,7 @@ import useWebSocket from "react-use-websocket";
 import "./App.css";
 import { useState } from "react";
 
-const WS_URL = "ws://127.0.0.1:8000/wsairplane";
+const WS_URL = "wss://acme-pi-79552883051b.herokuapp.com/wsairplane";
 
 type AiplaneType = {
   airplane: {
@@ -46,7 +46,9 @@ function App() {
   return (
     <div className="bg-white border border-gray-200 flex justify-between px-3 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
       {!airplaneInfos?.airplane.id ? (
-        <div className="flex w-full p-3 justify-center text-xl">Waiting for connections...</div>
+        <div className="flex w-full p-3 justify-center text-xl">
+          Waiting for connections...
+        </div>
       ) : (
         <div className="flex justify-around w-full">
           <div>
@@ -94,11 +96,19 @@ function App() {
           <div>
             <h1 className="text-2xl my-8 font-bold">Reporte atual</h1>
 
-            <div className="shadow rounded border py-4 px-8 my-2 mx-2">
-              <h2 className="font-semibold">{airplaneInfos?.report.title}</h2>
-              <p>{airplaneInfos?.report.description}</p>
-              <p>{new Date(airplaneInfos?.report.created_at).toLocaleDateString()}</p>
-            </div>
+            {!airplaneInfos.report.id ? (
+              <div>Esse avião não possui nenhum reporte atualmente</div>
+            ) : (
+              <div className="shadow rounded border py-4 px-8 my-2 mx-2">
+                <h2 className="font-semibold">{airplaneInfos?.report.title}</h2>
+                <p>{airplaneInfos?.report.description}</p>
+                <p>
+                  {new Date(
+                    airplaneInfos?.report.created_at
+                  ).toLocaleDateString()}
+                </p>
+              </div>
+            )}
           </div>
           <div>
             <h1 className="text-2xl my-8 font-bold">Histórico de manutenção</h1>
